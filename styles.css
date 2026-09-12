@@ -4,14 +4,24 @@
    ========================================================================== */
 
 :root{
+  color-scheme:light;
   --apple:#8DB600;
   --apple-bright:#A9D93B;
-  --apple-deep:#5C7A0B;
+  --apple-deep:#566F0A;
   --ink:#16210F;
   --ink-soft:#4A5742;
   --paper:#FAFBF4;
   --panel:#EDF2DE;
   --line:#DCE4C6;
+  --paper-blur:rgba(250,251,244,.88);
+  --tag-alt:#FFFFFF;
+  --btn-bg:#566F0A;
+  --btn-fg:#FFFFFF;
+  --btn-bg-hover:#3F5206;
+  --footer-bg:#16210F;
+  --footer-fg:#F2F6E6;
+  --footer-rule:rgba(242,246,230,.18);
+  --footer-mute:rgba(242,246,230,.55);
 
   --bs-body-font-family:"Karla",system-ui,sans-serif;
   --bs-body-color:var(--ink);
@@ -19,6 +29,31 @@
   --bs-link-color-rgb:92,122,11;
   --bs-border-color:var(--line);
 }
+
+/* ---------- dark theme ----------
+   Set on <html> as data-theme="dark". Only the tokens change; every rule
+   below reads from them, so nothing else needs a dark variant. */
+[data-theme="dark"]{
+  color-scheme:dark;
+  --apple:#A9D93B;
+  --apple-bright:#C3E86A;
+  --apple-deep:#BBE25A;
+  --ink:#E9F0DC;
+  --ink-soft:#9DAD8C;
+  --paper:#10160C;
+  --panel:#18210F;
+  --line:#2E3C22;
+  --paper-blur:rgba(16,22,12,.88);
+  --tag-alt:#10160C;
+  --btn-bg:#A9D93B;
+  --btn-fg:#10160C;
+  --btn-bg-hover:#C3E86A;
+  --footer-bg:#080C05;
+  --footer-fg:#E9F0DC;
+  --footer-rule:rgba(233,240,220,.16);
+  --footer-mute:rgba(233,240,220,.5);
+}
+
 html{scroll-behavior:smooth}
 body{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
 
@@ -28,15 +63,32 @@ body{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased
 .lede{font-size:1.05rem;line-height:1.7;color:var(--ink-soft);max-width:56ch}
 
 /* ---------- top bar ---------- */
-.topbar{background:rgba(250,251,244,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar{background:var(--paper-blur);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .topbar .brand{font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none}
 .topbar .navlink{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;padding:.25rem 0;border-bottom:1px solid transparent}
 .topbar .navlink:hover,.topbar .navlink:focus-visible{color:var(--apple-deep);border-bottom-color:var(--apple)}
 
-.btn-apple{background:var(--apple);color:#fff;border:none;border-radius:999px;font-weight:700;padding:.6rem 1.35rem;font-size:.92rem}
-.btn-apple:hover,.btn-apple:focus-visible{background:var(--apple-deep);color:#fff}
+.btn-apple{background:var(--btn-bg);color:var(--btn-fg);border:none;border-radius:999px;font-weight:700;padding:.6rem 1.35rem;font-size:.92rem}
+.btn-apple:hover,.btn-apple:focus-visible{background:var(--btn-bg-hover);color:var(--btn-fg)}
 .btn-outline-apple{border:1.5px solid var(--apple);color:var(--apple-deep);background:transparent;border-radius:999px;font-weight:700;padding:.6rem 1.35rem;font-size:.92rem}
 .btn-outline-apple:hover,.btn-outline-apple:focus-visible{background:var(--panel);color:var(--apple-deep)}
+
+
+/* ---------- theme toggle ---------- */
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;
+  border:1.5px solid var(--line);border-radius:999px;background:transparent;color:var(--ink-soft);cursor:pointer;
+  transition:border-color .2s ease,color .2s ease,background .2s ease}
+.theme-toggle:hover,.theme-toggle:focus-visible{border-color:var(--apple);color:var(--apple-deep);background:var(--panel)}
+.theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.theme-toggle .moon{display:none}
+[data-theme="dark"] .theme-toggle .sun{display:none}
+[data-theme="dark"] .theme-toggle .moon{display:block}
+
+body,.topbar,.band-panel,.contact,.card-apple,.tag,.theme-toggle{
+  transition:background-color .25s ease,color .25s ease,border-color .25s ease}
+@media (prefers-reduced-motion:reduce){
+  body,.topbar,.band-panel,.contact,.card-apple,.tag,.theme-toggle{transition:none}
+}
 
 /* ---------- hero ---------- */
 .hero{padding:clamp(3rem,9vw,6.5rem) 0 clamp(2.5rem,6vw,4.5rem)}
@@ -114,7 +166,7 @@ body{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased
 .skillset{border-top:1px solid var(--line);padding-top:1.1rem;height:100%}
 .skillset h3{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--apple-deep);margin-bottom:.9rem}
 .tag{display:inline-block;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.32rem .85rem;margin:0 .35rem .5rem 0;font-size:.88rem;color:var(--ink)}
-.band-panel .tag{background:#fff}
+.band-panel .tag{background:var(--tag-alt)}
 
 /* ---------- cards ---------- */
 .card-apple{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:1.5rem 1.6rem;height:100%}
@@ -125,15 +177,15 @@ body{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased
 .cert .seal{flex:0 0 auto;width:22px;height:22px;border-radius:50% 0 50% 50%;transform:rotate(45deg);background:var(--apple-bright);margin-top:.15rem}
 
 /* ---------- contact ---------- */
-.contact{background:var(--ink);color:#F2F6E6;padding:clamp(3rem,7vw,5rem) 0}
+.contact{background:var(--footer-bg);color:var(--footer-fg);padding:clamp(3rem,7vw,5rem) 0}
 .contact .eyebrow{color:var(--apple-bright)}
-.contact a{color:#F2F6E6;text-decoration:none}
+.contact a{color:var(--footer-fg);text-decoration:none}
 .contact .mailto{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;letter-spacing:-.02em;font-size:clamp(1.5rem,5.2vw,3rem);line-height:1.05;border-bottom:2px solid var(--apple);display:inline-block}
 .contact .mailto:hover{color:var(--apple-bright);border-bottom-color:var(--apple-bright)}
-.contact .cline{border-top:1px solid rgba(242,246,230,.18);padding:.8rem 0;font-size:.95rem;display:flex;gap:1rem}
+.contact .cline{border-top:1px solid var(--footer-rule);padding:.8rem 0;font-size:.95rem;display:flex;gap:1rem}
 .contact .cline span:first-child{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--apple-bright);flex:0 0 6.5rem;padding-top:.15rem}
 .contact .cline a:hover{color:var(--apple-bright)}
-.colophon{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:rgba(242,246,230,.55);margin-top:2.5rem}
+.colophon{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--footer-mute);margin-top:2.5rem}
 
 /* ---------- motion ---------- */
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
@@ -155,6 +207,7 @@ body{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased
 /* ---------- print ---------- */
 @media print{
   .topbar,.tree-wrap,.tree-readout,.tree-caption,.btn-apple,.btn-outline-apple{display:none!important}
+  :root,[data-theme="dark"]{--paper:#fff;--panel:#fff;--ink:#000;--ink-soft:#333;--line:#999;--footer-bg:#fff;--footer-fg:#000}
   body,.contact{background:#fff!important;color:#000!important}
   .contact a,.contact .cline span:first-child{color:#000!important}
   .band,.hero{padding:1rem 0!important}

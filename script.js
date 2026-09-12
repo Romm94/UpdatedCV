@@ -6,6 +6,43 @@
 (function(){
 var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ---- theme toggle ----
+   The initial theme is set by the inline script in <head> so the page
+   never flashes. This only handles clicks and keeps the button labelled. */
+var root = document.documentElement;
+var toggle = document.getElementById('themeToggle');
+
+function syncToggle(){
+  var dark = root.getAttribute('data-theme') === 'dark';
+  if(!toggle) return;
+  toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+}
+syncToggle();
+
+if(toggle){
+  toggle.addEventListener('click', function(){
+    var dark = root.getAttribute('data-theme') === 'dark';
+    if(dark){ root.removeAttribute('data-theme'); }
+    else { root.setAttribute('data-theme','dark'); }
+    try{ localStorage.setItem('theme', dark ? 'light' : 'dark'); }catch(e){}
+    syncToggle();
+  });
+}
+
+/* Follow the OS setting until the visitor makes their own choice. */
+var mq = window.matchMedia('(prefers-color-scheme: dark)');
+var onSchemeChange = function(e){
+  var chosen = null;
+  try{ chosen = localStorage.getItem('theme'); }catch(err){}
+  if(chosen) return;
+  if(e.matches){ root.setAttribute('data-theme','dark'); }
+  else { root.removeAttribute('data-theme'); }
+  syncToggle();
+};
+if(mq.addEventListener){ mq.addEventListener('change', onSchemeChange); }
+else if(mq.addListener){ mq.addListener(onSchemeChange); }
+
 /* ---- tree of experience: branches grow from the base upward ---- */
 var branches = Array.prototype.slice.call(document.querySelectorAll('.branch'));
 var yearEl = document.getElementById('treeYear');

@@ -3,6 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>
+  /* Runs before first paint so the page never flashes the wrong theme.
+     Must stay inline in <head> — an external file loads too late. */
+  (function(){
+    try{
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(saved === 'dark' || (!saved && prefersDark)){
+        document.documentElement.setAttribute('data-theme','dark');
+      }
+    }catch(e){}
+  })();
+</script>
 <title>Rommar Ombao — Amazon PPC Manager, Frontend Developer, Executive VA</title>
 <meta name="description" content="CV of Rommar Ombao: Amazon PPC manager, frontend developer and executive virtual assistant based in Pasig City, Metro Manila.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +35,15 @@
       <a class="navlink d-none d-md-inline" href="#experience">Experience</a>
       <a class="navlink d-none d-md-inline" href="#skills">Skills</a>
       <a class="navlink d-none d-md-inline" href="#credentials">Credentials</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Switch theme">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"></circle>
+          <path d="M12 2.4v2.6M12 19v2.6M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2.4 12h2.6M19 12h2.6M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"></path>
+        </svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a7 7 0 0 0 10.8 10.8Z"></path>
+        </svg>
+      </button>
       <a class="btn btn-apple btn-sm" href="mailto:rommarombao@gmail.com">Email me</a>
     </div>
   </div>

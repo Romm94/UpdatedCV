@@ -13,6 +13,7 @@ Amazon PPC Manager · Frontend Developer · Executive Virtual Assistant.
 - **Scroll-linked timeline** — the stem running down the Experience section fills with green as you scroll past it, and each role's leaf node lights up as it enters view.
 - **Keyboard and screen reader support** — every branch is focusable and carries an `aria-label`, so the tree is navigable without a mouse.
 - **Reduced motion** — everything renders instantly and fully for visitors who have `prefers-reduced-motion` set. No animation is required to read the page.
+- **Dark mode** — a toggle in the top bar, defaulting to the visitor's system preference and remembering their choice in `localStorage`. An inline script in `<head>` applies the theme before first paint so the page never flashes white.
 - **Print stylesheet** — `Ctrl`/`Cmd` + `P` drops the navigation and the tree and prints a clean paper CV.
 - **Responsive** — a single column on phones, two columns from the `lg` breakpoint up.
 
@@ -50,7 +51,7 @@ python3 -m http.server 8000
 
 ## Making it your own
 
-**Colours.** Every colour is a custom property at the top of `css/styles.css`:
+**Colours.** Every colour is a custom property at the top of `css/styles.css`. The light theme lives in `:root` and the dark theme in `[data-theme="dark"]` just below it — every rule in the file reads from these tokens, so adding or changing a theme means editing only those two blocks:
 
 ```css
 :root{
@@ -62,10 +63,14 @@ python3 -m http.server 8000
   --paper:#FAFBF4;         /* page background */
   --panel:#EDF2DE;         /* alternating section background */
   --line:#DCE4C6;          /* rules, borders, dormant leaves */
+  --btn-bg:#566F0A;        /* filled button — dark enough for white text */
+  --footer-bg:#16210F;     /* footer stays dark in both themes */
 }
 ```
 
-Change those eight values and the whole page follows.
+Change those values and the whole page follows.
+
+**A note on the greens.** `--apple` (`#8DB600`) is bright, which makes it good for leaves and rules but unusable behind white text — the contrast is about 2.4:1, well under the 4.5:1 minimum. That's why buttons and small labels use the darker `--apple-deep` instead. If you brighten these, check the result against a contrast checker before shipping it.
 
 **Adding a role.** Copy an `<article class="job reveal">` block in `index.html` and edit the dates, title and bullets. To give it a branch on the tree, duplicate a `<g class="branch">` group, adjust the `d` attribute of its `.limb` path and the `transform` on each leaf, then update `data-year` and `data-who` — the script reads those attributes to build the caption, so no JavaScript changes are needed.
 
